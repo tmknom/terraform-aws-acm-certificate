@@ -38,3 +38,15 @@ resource "aws_route53_record" "default" {
   records = ["${aws_acm_certificate.default.domain_validation_options.0.resource_record_value}"]
   ttl     = "${var.route53_record_ttl}"
 }
+
+# This resource is used together with aws_route53_record and aws_acm_certificate to request a DNS validated certificate,
+# deploy the required validation records and wait for validation to complete.
+#
+# WARNING: This resource implements a part of the validation workflow.
+# It does not represent a real-world entity in AWS, therefore changing or deleting this resource on its own has no immediate effect.
+#
+# https://www.terraform.io/docs/providers/aws/r/acm_certificate_validation.html
+resource "aws_acm_certificate_validation" "default" {
+  certificate_arn         = "${aws_acm_certificate.default.arn}"
+  validation_record_fqdns = ["${aws_route53_record.default.fqdn}"]
+}
