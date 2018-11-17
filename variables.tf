@@ -3,6 +3,11 @@ variable "domain_name" {
   description = "A domain name for which the certificate should be issued."
 }
 
+variable "route53_record_zone_id" {
+  type        = "string"
+  description = "The ID of the hosted zone to contain this record."
+}
+
 variable "subject_alternative_names" {
   default     = []
   type        = "list"
@@ -13,4 +18,10 @@ variable "tags" {
   default     = {}
   type        = "map"
   description = "A mapping of tags to assign to the resource."
+}
+
+variable "route53_record_ttl" {
+  default     = "60"
+  type        = "string"
+  description = "The TTL of the record."
 }

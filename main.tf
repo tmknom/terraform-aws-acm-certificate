@@ -25,3 +25,16 @@ resource "aws_acm_certificate" "default" {
     create_before_destroy = true
   }
 }
+
+# You add the CNAME records to your DNS database only once.
+# ACM automatically renews your certificate as long as the certificate is in use and your CNAME record remains in place.
+# https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-validate-dns.html
+#
+# https://www.terraform.io/docs/providers/aws/r/route53_record.html
+resource "aws_route53_record" "default" {
+  name    = "${aws_acm_certificate.default.domain_validation_options.0.resource_record_name}"
+  type    = "${aws_acm_certificate.default.domain_validation_options.0.resource_record_type}"
+  zone_id = "${var.route53_record_zone_id}"
+  records = ["${aws_acm_certificate.default.domain_validation_options.0.resource_record_value}"]
+  ttl     = "${var.route53_record_ttl}"
+}
