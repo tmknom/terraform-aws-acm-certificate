@@ -10,10 +10,10 @@ output "acm_certificate_domain_validation_options" {
   value = "${module.acm.acm_certificate_domain_validation_options}"
 }
 
-output "route53_record_fqdn" {
-  value = "${module.acm.route53_record_fqdn}"
+output "route53_record_fqdns" {
+  value = "${module.acm.route53_record_fqdns}"
 }
 
-output "route53_record_name" {
-  value = "${module.acm.route53_record_name}"
+output "route53_record_names" {
+  value = "${module.acm.route53_record_names}"
 }
