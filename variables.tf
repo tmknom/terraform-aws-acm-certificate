@@ -11,7 +11,7 @@ variable "zone_id" {
 variable "subject_alternative_names" {
   default     = []
   type        = "list"
-  description = "A list of domains that should be SANs in the issued certificate."
+  description = "A list of domains that should be Subject Alternative Names in the issued certificate."
 }
 
 variable "tags" {
