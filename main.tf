@@ -32,10 +32,12 @@ resource "aws_acm_certificate" "default" {
 #
 # https://www.terraform.io/docs/providers/aws/r/route53_record.html
 resource "aws_route53_record" "default" {
-  name    = "${aws_acm_certificate.default.domain_validation_options.0.resource_record_name}"
-  type    = "${aws_acm_certificate.default.domain_validation_options.0.resource_record_type}"
+  count = "${length(var.subject_alternative_names) + 1}"
+
+  name    = "${lookup(aws_acm_certificate.default.domain_validation_options[count.index], "resource_record_name")}"
+  type    = "${lookup(aws_acm_certificate.default.domain_validation_options[count.index], "resource_record_type")}"
   zone_id = "${var.route53_record_zone_id}"
-  records = ["${aws_acm_certificate.default.domain_validation_options.0.resource_record_value}"]
+  records = ["${lookup(aws_acm_certificate.default.domain_validation_options[count.index], "resource_record_value")}"]
   ttl     = "${var.route53_record_ttl}"
 }
 
@@ -48,5 +50,5 @@ resource "aws_route53_record" "default" {
 # https://www.terraform.io/docs/providers/aws/r/acm_certificate_validation.html
 resource "aws_acm_certificate_validation" "default" {
   certificate_arn         = "${aws_acm_certificate.default.arn}"
-  validation_record_fqdns = ["${aws_route53_record.default.fqdn}"]
+  validation_record_fqdns = ["${aws_route53_record.default.*.fqdn}"]
 }
