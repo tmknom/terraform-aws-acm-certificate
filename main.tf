@@ -36,7 +36,7 @@ resource "aws_route53_record" "default" {
 
   name    = "${lookup(aws_acm_certificate.default.domain_validation_options[count.index], "resource_record_name")}"
   type    = "${lookup(aws_acm_certificate.default.domain_validation_options[count.index], "resource_record_type")}"
-  zone_id = "${var.route53_record_zone_id}"
+  zone_id = "${var.zone_id}"
   records = ["${lookup(aws_acm_certificate.default.domain_validation_options[count.index], "resource_record_value")}"]
   ttl     = "${var.route53_record_ttl}"
 }
