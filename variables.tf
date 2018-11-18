@@ -20,8 +20,8 @@ variable "tags" {
   description = "A mapping of tags to assign to the resource."
 }
 
-variable "route53_record_ttl" {
+variable "ttl" {
   default     = "60"
   type        = "string"
-  description = "The TTL of the record."
+  description = "The TTL of the validation records."
 }

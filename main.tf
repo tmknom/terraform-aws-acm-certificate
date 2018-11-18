@@ -38,7 +38,7 @@ resource "aws_route53_record" "default" {
   type    = "${lookup(aws_acm_certificate.default.domain_validation_options[count.index], "resource_record_type")}"
   zone_id = "${var.zone_id}"
   records = ["${lookup(aws_acm_certificate.default.domain_validation_options[count.index], "resource_record_value")}"]
-  ttl     = "${var.route53_record_ttl}"
+  ttl     = "${var.ttl}"
 }
 
 # This resource is used together with aws_route53_record and aws_acm_certificate to request a DNS validated certificate,
