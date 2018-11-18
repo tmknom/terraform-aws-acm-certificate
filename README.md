@@ -6,6 +6,17 @@
 
 Terraform module which creates ACM certificate resources on AWS.
 
+## Description
+
+Provision [ACM certificate](https://docs.aws.amazon.com/acm/latest/userguide/acm-overview.html)
+and [Route53 record](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/rrsets-working-with.html)
+for certificates validation.
+
+This module provides recommended settings:
+
+- Use DNS to validate domain ownership
+- Renew certificates automatically
+
 ## Usage
 
 ### Minimal
