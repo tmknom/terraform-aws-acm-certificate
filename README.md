@@ -4,15 +4,50 @@
 [![GitHub tag](https://img.shields.io/github/tag/tmknom/terraform-aws-acm-certificate.svg)](https://registry.terraform.io/modules/tmknom/acm-certificate/aws)
 [![License](https://img.shields.io/github/license/tmknom/terraform-aws-acm-certificate.svg)](https://opensource.org/licenses/Apache-2.0)
 
-Terraform module template following [Standard Module Structure](https://www.terraform.io/docs/modules/create.html#standard-module-structure).
+Terraform module which creates ACM certificate resources on AWS.
+
+## Description
+
+Provision [ACM certificate](https://docs.aws.amazon.com/acm/latest/userguide/acm-overview.html)
+and [Route53 record](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/rrsets-working-with.html)
+for certificates validation.
+
+This module provides recommended settings:
+
+- Use DNS to validate domain ownership
+- Renew certificates automatically
 
 ## Usage
 
-Named `terraform-<PROVIDER>-<NAME>`. Module repositories must use this three-part name format.
+### Minimal
 
-```sh
-curl -fsSL https://raw.githubusercontent.com/tmknom/terraform-aws-acm-certificate/master/install | sh -s terraform-aws-sample
-cd terraform-aws-sample && make install
+```hcl
+module "certificate" {
+  source      = "git::https://github.com/tmknom/terraform-aws-acm-certificate.git?ref=tags/1.0.0"
+  domain_name = "example.com"
+  zone_id     = "${aws_route53_zone.default.zone_id}"
+}
+```
+
+### Complete
+
+```hcl
+module "certificate" {
+  source      = "git::https://github.com/tmknom/terraform-aws-acm-certificate.git?ref=tags/1.0.0"
+  domain_name = "example.com"
+  zone_id     = "${aws_route53_zone.default.zone_id}"
+
+  ttl = "120"
+
+  subject_alternative_names = [
+    "stg.example.com",
+    "dev.example.com",
+  ]
+
+  tags = {
+    Environment = "prod"
+  }
+}
 ```
 
 ## Examples
@@ -22,11 +57,23 @@ cd terraform-aws-sample && make install
 
 ## Inputs
 
-Write your Terraform module inputs.
+| Name                      | Description                                                                           |  Type  | Default | Required |
+| ------------------------- | ------------------------------------------------------------------------------------- | :----: | :-----: | :------: |
+| domain_name               | A domain name for which the certificate should be issued.                             | string |    -    |   yes    |
+| zone_id                   | The ID of the hosted zone in which create validation records.                         | string |    -    |   yes    |
+| subject_alternative_names | A list of domains that should be Subject Alternative Names in the issued certificate. |  list  |  `[]`   |    no    |
+| tags                      | A mapping of tags to assign to the resource.                                          |  map   |  `{}`   |    no    |
+| ttl                       | The TTL of the validation records.                                                    | string |  `60`   |    no    |
 
 ## Outputs
 
-Write your Terraform module outputs.
+| Name                                      | Description                                                                           |
+| ----------------------------------------- | ------------------------------------------------------------------------------------- |
+| acm_certificate_arn                       | The ARN of the certificate.                                                           |
+| acm_certificate_domain_validation_options | A list of attributes to feed into other resources to complete certificate validation. |
+| acm_certificate_id                        | The ARN of the certificate.                                                           |
+| route53_record_fqdns                      | FQDN built using the zone domain and name.                                            |
+| route53_record_names                      | The name of the record.                                                               |
 
 ## Development
 
