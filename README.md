@@ -22,11 +22,23 @@ cd terraform-aws-sample && make install
 
 ## Inputs
 
-Write your Terraform module inputs.
+| Name                      | Description                                                                           |  Type  | Default | Required |
+| ------------------------- | ------------------------------------------------------------------------------------- | :----: | :-----: | :------: |
+| domain_name               | A domain name for which the certificate should be issued.                             | string |    -    |   yes    |
+| zone_id                   | The ID of the hosted zone in which create validation records.                         | string |    -    |   yes    |
+| subject_alternative_names | A list of domains that should be Subject Alternative Names in the issued certificate. |  list  |  `[]`   |    no    |
+| tags                      | A mapping of tags to assign to the resource.                                          |  map   |  `{}`   |    no    |
+| ttl                       | The TTL of the validation records.                                                    | string |  `60`   |    no    |
 
 ## Outputs
 
-Write your Terraform module outputs.
+| Name                                      | Description                                                                           |
+| ----------------------------------------- | ------------------------------------------------------------------------------------- |
+| acm_certificate_arn                       | The ARN of the certificate.                                                           |
+| acm_certificate_domain_validation_options | A list of attributes to feed into other resources to complete certificate validation. |
+| acm_certificate_id                        | The ARN of the certificate.                                                           |
+| route53_record_fqdns                      | FQDN built using the zone domain and name.                                            |
+| route53_record_names                      | The name of the record.                                                               |
 
 ## Development
 
