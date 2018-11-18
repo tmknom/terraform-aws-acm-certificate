@@ -83,6 +83,14 @@ module "certificate" {
 
 ### Configure environment variables
 
+#### Terraform variables for examples
+
+```shell
+export TF_VAR_domain_name=example.org
+```
+
+#### AWS credentials
+
 ```shell
 export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
 export AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
