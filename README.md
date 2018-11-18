@@ -8,11 +8,35 @@ Terraform module template following [Standard Module Structure](https://www.terr
 
 ## Usage
 
-Named `terraform-<PROVIDER>-<NAME>`. Module repositories must use this three-part name format.
+### Minimal
 
-```sh
-curl -fsSL https://raw.githubusercontent.com/tmknom/terraform-aws-acm-certificate/master/install | sh -s terraform-aws-sample
-cd terraform-aws-sample && make install
+```hcl
+module "certificate" {
+  source      = "git::https://github.com/tmknom/terraform-aws-acm-certificate.git?ref=tags/1.0.0"
+  domain_name = "example.com"
+  zone_id     = "${aws_route53_zone.default.zone_id}"
+}
+```
+
+### Complete
+
+```hcl
+module "certificate" {
+  source      = "git::https://github.com/tmknom/terraform-aws-acm-certificate.git?ref=tags/1.0.0"
+  domain_name = "example.com"
+  zone_id     = "${aws_route53_zone.default.zone_id}"
+
+  ttl = "120"
+
+  subject_alternative_names = [
+    "stg.example.com",
+    "dev.example.com",
+  ]
+
+  tags = {
+    Environment = "prod"
+  }
+}
 ```
 
 ## Examples
