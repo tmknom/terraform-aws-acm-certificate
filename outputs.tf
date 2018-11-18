@@ -10,7 +10,7 @@ output "acm_certificate_arn" {
 
 output "acm_certificate_domain_validation_options" {
   value       = "${aws_acm_certificate.default.domain_validation_options}"
-  description = "A list of attributes to feed into other resources to complete certificate validation. Only set if DNS-validation was used."
+  description = "A list of attributes to feed into other resources to complete certificate validation."
 }
 
 output "route53_record_fqdns" {
