@@ -1,9 +1,9 @@
 module "certificate" {
-  source                 = "../../"
-  domain_name            = "${local.domain_name}"
-  route53_record_zone_id = "${data.aws_route53_zone.default.id}"
+  source      = "../../"
+  domain_name = "${local.domain_name}"
+  zone_id     = "${data.aws_route53_zone.default.id}"
 
-  route53_record_ttl = "120"
+  ttl = "120"
 
   subject_alternative_names = [
     "stg.${local.domain_name}",
