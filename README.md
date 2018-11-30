@@ -47,6 +47,8 @@ module "certificate" {
   tags = {
     Environment = "prod"
   }
+
+  enabled = true
 }
 ```
 
@@ -61,6 +63,7 @@ module "certificate" {
 | ------------------------- | ------------------------------------------------------------------------------------- | :----: | :-----: | :------: |
 | domain_name               | A domain name for which the certificate should be issued.                             | string |    -    |   yes    |
 | zone_id                   | The ID of the hosted zone in which create validation records.                         | string |    -    |   yes    |
+| enabled                   | Set to false to prevent the module from creating anything.                            | string | `true`  |    no    |
 | subject_alternative_names | A list of domains that should be Subject Alternative Names in the issued certificate. |  list  |  `[]`   |    no    |
 | tags                      | A mapping of tags to assign to the resource.                                          |  map   |  `{}`   |    no    |
 | ttl                       | The TTL of the validation records.                                                    | string |  `60`   |    no    |

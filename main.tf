@@ -4,6 +4,8 @@
 
 # https://www.terraform.io/docs/providers/aws/r/acm_certificate.html
 resource "aws_acm_certificate" "default" {
+  count = "${var.enabled}"
+
   # You can use a fully qualified domain name (FQDN) such as www.example.com
   # or a bare or apex domain name such as example.com.
   # https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-public.html
@@ -32,7 +34,7 @@ resource "aws_acm_certificate" "default" {
 #
 # https://www.terraform.io/docs/providers/aws/r/route53_record.html
 resource "aws_route53_record" "default" {
-  count = "${length(var.subject_alternative_names) + 1}"
+  count = "${var.enabled ? length(var.subject_alternative_names) + 1 : 0}"
 
   name    = "${lookup(aws_acm_certificate.default.domain_validation_options[count.index], "resource_record_name")}"
   type    = "${lookup(aws_acm_certificate.default.domain_validation_options[count.index], "resource_record_type")}"
@@ -49,6 +51,8 @@ resource "aws_route53_record" "default" {
 #
 # https://www.terraform.io/docs/providers/aws/r/acm_certificate_validation.html
 resource "aws_acm_certificate_validation" "default" {
+  count = "${var.enabled}"
+
   certificate_arn         = "${aws_acm_certificate.default.arn}"
   validation_record_fqdns = ["${aws_route53_record.default.*.fqdn}"]
 }

@@ -13,6 +13,8 @@ module "certificate" {
   tags = {
     Environment = "prod"
   }
+
+  enabled = true
 }
 
 data "aws_route53_zone" "default" {
