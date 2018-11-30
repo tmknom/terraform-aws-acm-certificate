@@ -31,3 +31,9 @@ variable "enabled" {
   type        = "string"
   description = "Set to false to prevent the module from creating anything."
 }
+
+variable "timeouts_create" {
+  default     = "5m"
+  type        = "string"
+  description = "THow long to wait for a certificate to be issued."
+}

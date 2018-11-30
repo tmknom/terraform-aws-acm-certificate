@@ -55,4 +55,8 @@ resource "aws_acm_certificate_validation" "default" {
 
   certificate_arn         = "${aws_acm_certificate.default.arn}"
   validation_record_fqdns = ["${aws_route53_record.default.*.fqdn}"]
+
+  timeouts {
+    create = "${var.timeouts_create}"
+  }
 }
