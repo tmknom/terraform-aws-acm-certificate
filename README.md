@@ -23,7 +23,7 @@ This module provides recommended settings:
 
 ```hcl
 module "certificate" {
-  source      = "git::https://github.com/tmknom/terraform-aws-acm-certificate.git?ref=tags/1.0.0"
+  source      = "git::https://github.com/tmknom/terraform-aws-acm-certificate.git?ref=tags/1.1.0"
   domain_name = "example.com"
   zone_id     = "${aws_route53_zone.default.zone_id}"
 }
@@ -33,7 +33,7 @@ module "certificate" {
 
 ```hcl
 module "certificate" {
-  source      = "git::https://github.com/tmknom/terraform-aws-acm-certificate.git?ref=tags/1.0.0"
+  source      = "git::https://github.com/tmknom/terraform-aws-acm-certificate.git?ref=tags/1.1.0"
   domain_name = "example.com"
   zone_id     = "${aws_route53_zone.default.zone_id}"
 
