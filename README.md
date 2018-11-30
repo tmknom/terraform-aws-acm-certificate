@@ -48,7 +48,8 @@ module "certificate" {
     Environment = "prod"
   }
 
-  enabled = true
+  enabled         = true
+  timeouts_create = "5m"
 }
 ```
 
@@ -66,6 +67,7 @@ module "certificate" {
 | enabled                   | Set to false to prevent the module from creating anything.                            | string | `true`  |    no    |
 | subject_alternative_names | A list of domains that should be Subject Alternative Names in the issued certificate. |  list  |  `[]`   |    no    |
 | tags                      | A mapping of tags to assign to the resource.                                          |  map   |  `{}`   |    no    |
+| timeouts_create           | THow long to wait for a certificate to be issued.                                     | string |  `5m`   |    no    |
 | ttl                       | The TTL of the validation records.                                                    | string |  `60`   |    no    |
 
 ## Outputs

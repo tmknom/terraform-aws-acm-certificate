@@ -14,7 +14,8 @@ module "certificate" {
     Environment = "prod"
   }
 
-  enabled = true
+  enabled         = true
+  timeouts_create = "5m"
 }
 
 data "aws_route53_zone" "default" {
