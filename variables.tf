@@ -25,3 +25,9 @@ variable "ttl" {
   type        = "string"
   description = "The TTL of the validation records."
 }
+
+variable "enabled" {
+  default     = true
+  type        = "string"
+  description = "Set to false to prevent the module from creating anything."
+}
