@@ -14,7 +14,7 @@ module "certificate" {
     Environment = "prod"
   }
 
-  enabled = true
+  enabled         = true
   timeouts_create = "5m"
 }
 
