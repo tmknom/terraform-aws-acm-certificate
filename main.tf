@@ -4,22 +4,27 @@
 
 # https://www.terraform.io/docs/providers/aws/r/acm_certificate.html
 resource "aws_acm_certificate" "default" {
-  count = "${var.enabled}"
+  count = var.enabled ? 1 : 0
 
   # You can use a fully qualified domain name (FQDN) such as www.example.com
   # or a bare or apex domain name such as example.com.
   # https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-public.html
-  domain_name = "${var.domain_name}"
+  domain_name = var.domain_name
 
   # This is useful for protecting both a bare or apex domain (like example.com) and its subdomains (*.example.com).
   # https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-request-public.html
-  subject_alternative_names = ["${var.subject_alternative_names}"]
+  subject_alternative_names = var.subject_alternative_names
 
   # This module supports only DNS.
   validation_method = "DNS"
 
   # A mapping of tags to assign to the resource.
-  tags = "${merge(map("Name", var.domain_name), var.tags)}"
+  tags = merge(
+    {
+      "Name" = var.domain_name
+    },
+    var.tags,
+  )
 
   # It's recommended to specify create_before_destroy = true in a lifecycle block
   # to replace a certificate which is currently in use (eg, by aws_lb_listener).
@@ -34,13 +39,13 @@ resource "aws_acm_certificate" "default" {
 #
 # https://www.terraform.io/docs/providers/aws/r/route53_record.html
 resource "aws_route53_record" "default" {
-  count = "${var.enabled ? length(var.subject_alternative_names) + 1 : 0}"
+  count = var.enabled ? length(var.subject_alternative_names) + 1 : 0
 
-  name    = "${lookup(aws_acm_certificate.default.domain_validation_options[count.index], "resource_record_name")}"
-  type    = "${lookup(aws_acm_certificate.default.domain_validation_options[count.index], "resource_record_type")}"
-  zone_id = "${var.zone_id}"
-  records = ["${lookup(aws_acm_certificate.default.domain_validation_options[count.index], "resource_record_value")}"]
-  ttl     = "${var.ttl}"
+  name    = aws_acm_certificate.default.0.domain_validation_options[count.index]["resource_record_name"]
+  type    = aws_acm_certificate.default.0.domain_validation_options[count.index]["resource_record_type"]
+  zone_id = var.zone_id
+  records = [aws_acm_certificate.default.0.domain_validation_options[count.index]["resource_record_value"]]
+  ttl     = var.ttl
 }
 
 # This resource is used together with aws_route53_record and aws_acm_certificate to request a DNS validated certificate,
@@ -51,12 +56,12 @@ resource "aws_route53_record" "default" {
 #
 # https://www.terraform.io/docs/providers/aws/r/acm_certificate_validation.html
 resource "aws_acm_certificate_validation" "default" {
-  count = "${var.enabled}"
+  count = var.enabled ? 1 : 0
 
-  certificate_arn         = "${aws_acm_certificate.default.arn}"
-  validation_record_fqdns = ["${aws_route53_record.default.*.fqdn}"]
+  certificate_arn         = aws_acm_certificate.default[0].arn
+  validation_record_fqdns = aws_route53_record.default.*.fqdn
 
   timeouts {
-    create = "${var.timeouts_create}"
+    create = var.timeouts_create
   }
 }
