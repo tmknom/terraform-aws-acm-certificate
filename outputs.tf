@@ -14,11 +14,11 @@ output "acm_certificate_domain_validation_options" {
 }
 
 output "route53_record_fqdns" {
-  value       = [aws_route53_record.default.*.fqdn]
+  value       = aws_route53_record.default.*.fqdn
   description = "FQDN built using the zone domain and name."
 }
 
 output "route53_record_names" {
-  value       = [aws_route53_record.default.*.name]
+  value       = aws_route53_record.default.*.name
   description = "The name of the record."
 }
