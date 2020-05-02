@@ -19,12 +19,7 @@ resource "aws_acm_certificate" "default" {
   validation_method = "DNS"
 
   # A mapping of tags to assign to the resource.
-  tags = merge(
-    {
-      "Name" = var.domain_name
-    },
-    var.tags,
-  )
+  tags = merge({ "Name" = var.domain_name }, var.tags)
 
   # It's recommended to specify create_before_destroy = true in a lifecycle block
   # to replace a certificate which is currently in use (eg, by aws_lb_listener).
