@@ -17,4 +17,3 @@ output "route53_record_fqdns" {
 output "route53_record_names" {
   value = module.certificate.route53_record_names
 }
-
