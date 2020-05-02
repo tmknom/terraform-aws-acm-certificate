@@ -22,4 +22,3 @@ output "route53_record_names" {
   value       = [aws_route53_record.default.*.name]
   description = "The name of the record."
 }
-

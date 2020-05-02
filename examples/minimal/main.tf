@@ -18,4 +18,3 @@ variable "domain_name" {
   type        = string
   description = "If TF_VAR_domain_name set in the environment variables, then use that value."
 }
-
